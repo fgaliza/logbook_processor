@@ -2,7 +2,7 @@ from datetime import datetime
 
 import simplejson as json
 from geopy import distance
-from logbook_processor.processor.processor import Waypoint
+from logbook_processor.processor.entities import Waypoint
 
 
 def calculate_distance(last_trip, current_waypoint):

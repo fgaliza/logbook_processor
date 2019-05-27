@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from logbook_processor.processor.processor import Trip, Waypoint
+from logbook_processor.processor.entities import Trip, Waypoint
 from logbook_processor.processor.utils import (
     calculate_distance,
     calculate_minute_difference,

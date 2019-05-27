@@ -1,18 +1,8 @@
 from abc import ABCMeta, abstractmethod
-from datetime import datetime
-from typing import NamedTuple, Tuple, Union
+from typing import Tuple, Union
 
-
-class Waypoint(NamedTuple):
-    timestamp: datetime
-    lat: float
-    lng: float
-
-
-class Trip(NamedTuple):
-    start: Waypoint
-    end: Waypoint
-    distance: int
+from logbook_processor.processor.entities import Trip, Waypoint
+from logbook_processor.processor.utils import calculate_distance, calculate_minute_difference
 
 
 class ListProcessor(metaclass=ABCMeta):
@@ -49,3 +39,23 @@ class StreamProcessor(metaclass=ABCMeta):
         :param waypoint: Waypoint
         """
         ...
+
+
+class LogbookStreamProcessor(StreamProcessor):
+    def __init__(self):
+        self.last_waypoint = None
+
+    def process_waypoint(self, waypoint: Waypoint) -> Union[Trip, None]:
+        if not self.last_waypoint:
+            self.last_waypoint = waypoint
+            return None
+
+        distance = calculate_distance(self.last_waypoint, waypoint)
+        if distance < 15:
+            return None
+        time_difference = calculate_minute_difference(self.last_waypoint.timestamp, waypoint.timestamp)
+        if time_difference <= 3:
+            return None
+
+        trip = Trip(start=self.last_waypoint, end=waypoint, distance=distance)
+        return trip
