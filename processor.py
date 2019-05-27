@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import Union, NamedTuple, Tuple
+from typing import NamedTuple, Tuple, Union
 
 
 class Waypoint(NamedTuple):
