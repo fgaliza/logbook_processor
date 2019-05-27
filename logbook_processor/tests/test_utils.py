@@ -1,15 +1,10 @@
 import pytest
-
 from logbook_processor.processor.processor import Waypoint
-
 from logbook_processor.processor.utils import (
     calculate_distance,
     calculate_minute_difference,
+    get_waypoints_from_json,
 )
-
-"""
-    isort:skip_file
-"""
 
 
 def get_waypoint_distance(lat, lng):
@@ -31,19 +26,27 @@ def test_calculate_distance():
 
 
 def test_calculate_minute_difference():
-    response = calculate_minute_difference(
-        start="2019-05-23T00:00:00Z", end="2019-05-23T00:05:00Z"
-    )
+    response = calculate_minute_difference(start="2019-05-23T00:00:00Z", end="2019-05-23T00:05:00Z")
     assert response == 5
 
 
 def test_calculate_minute_difference_same_timestamp():
-    response = calculate_minute_difference(
-        start="2019-05-23T00:00:00Z", end="2019-05-23T00:00:00Z"
-    )
+    response = calculate_minute_difference(start="2019-05-23T00:00:00Z", end="2019-05-23T00:00:00Z")
     assert response == 0
 
 
 def test_calculate_minute_difference_invalid_timestamp():
     with pytest.raises(ValueError):
         calculate_minute_difference(start="abc", end="abc")
+
+
+def test_get_waypoints_from_json():
+    waypoints = get_waypoints_from_json(file_path="logbook_processor/data/waypoints.json")
+    assert len(waypoints) == 175
+    assert type(waypoints) == list
+    assert all(type(waypoint) == Waypoint for waypoint in waypoints)
+
+
+def test_get_waypoints_from_json_invalid_path():
+    with pytest.raises(FileNotFoundError):
+        get_waypoints_from_json(file_path="abc/abc.py")
