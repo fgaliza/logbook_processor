@@ -3,6 +3,7 @@ from typing import Tuple, Union
 
 from logbook_processor.processor.entities import Trip, Waypoint
 from logbook_processor.processor.utils import calculate_distance, calculate_minute_difference
+from progress.bar import FillingSquaresBar
 
 
 class ListProcessor(metaclass=ABCMeta):
@@ -41,21 +42,28 @@ class StreamProcessor(metaclass=ABCMeta):
         ...
 
 
-class LogbookStreamProcessor(StreamProcessor):
-    def __init__(self):
+class LogbookListProcessor(ListProcessor):
+    def __init__(self, waypoints):
         self.last_valid_waypoint = None
+        self._waypoints = waypoints
+        self.trips = []
 
-    def process_waypoint(self, waypoint: Waypoint) -> Union[Trip, None]:
-        if not self.last_valid_waypoint:
+    def get_trips(self) -> Tuple[Trip]:
+        bar = FillingSquaresBar("Processing", max=len(self._waypoints))
+        for waypoint in self._waypoints:
+            bar.next()
+            if not self.last_valid_waypoint:
+                self.last_valid_waypoint = waypoint
+                continue
+            distance = calculate_distance(self.last_valid_waypoint, waypoint)
+            if distance < 15:
+                continue
+            time_difference = calculate_minute_difference(
+                self.last_valid_waypoint.timestamp, waypoint.timestamp
+            )
+            if time_difference <= 3:
+                continue
+            trip = Trip(start=self.last_valid_waypoint, end=waypoint, distance=distance)
             self.last_valid_waypoint = waypoint
-            return None
-
-        distance = calculate_distance(self.last_valid_waypoint, waypoint)
-        if distance < 15:
-            return None
-        time_difference = calculate_minute_difference(self.last_valid_waypoint.timestamp, waypoint.timestamp)
-        if time_difference <= 3:
-            return None
-
-        trip = Trip(start=self.last_valid_waypoint, end=waypoint, distance=distance)
-        return trip
+            self.trips.append(trip)
+        return tuple(self.trips)
