@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+black = "==19.3b0"
+
+[dev-packages]
+coverage = "*"
+ipdb = "*"
+ipython = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-deadfixtures = "*"
+pytest-lazy-fixture = "*"
+asynctest = "*"
+
+[requires]
+python_version = "3.7"
