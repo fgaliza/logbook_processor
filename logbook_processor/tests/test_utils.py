@@ -5,6 +5,7 @@ from logbook_processor.processor.processor import Trip, Waypoint
 from logbook_processor.processor.utils import (
     calculate_distance,
     calculate_minute_difference,
+    generate_file_name,
     get_waypoints_from_json,
     save_trips,
 )
@@ -63,3 +64,9 @@ def test_save_trips():
     save_trips(file_path=file_path, trip_list=[trip])
     assert os.path.exists(file_path)
     os.remove(file_path)
+
+
+def test_generate_file_name():
+    file_name1 = generate_file_name()
+    file_name2 = generate_file_name()
+    assert file_name1 != file_name2

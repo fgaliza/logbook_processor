@@ -32,3 +32,9 @@ def save_trips(file_path, trip_list):
     json_trip = json.dumps(trip_list, indent=2, namedtuple_as_object=True)
     with open(file_path, "w") as writer:
         writer.write(json_trip)
+
+
+def generate_file_name():
+    now = str(datetime.utcnow())
+    trip_file_path = f"data/my_trips_{now}.json"
+    return trip_file_path
