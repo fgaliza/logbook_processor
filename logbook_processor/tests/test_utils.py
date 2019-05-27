@@ -1,5 +1,15 @@
+import pytest
+
 from logbook_processor.processor.processor import Waypoint
-from logbook_processor.processor.utils import calculate_distance
+
+from logbook_processor.processor.utils import (
+    calculate_distance,
+    calculate_minute_difference,
+)
+
+"""
+    isort:skip_file
+"""
 
 
 def get_waypoint_distance(lat, lng):
@@ -18,3 +28,22 @@ def test_calculate_distance():
     pointB = get_waypoint_distance(lat=2, lng=2)
     response = calculate_distance(pointA, pointB)
     assert response == 156876  # response in meters
+
+
+def test_calculate_minute_difference():
+    response = calculate_minute_difference(
+        start="2019-05-23T00:00:00Z", end="2019-05-23T00:05:00Z"
+    )
+    assert response == 5
+
+
+def test_calculate_minute_difference_same_timestamp():
+    response = calculate_minute_difference(
+        start="2019-05-23T00:00:00Z", end="2019-05-23T00:00:00Z"
+    )
+    assert response == 0
+
+
+def test_calculate_minute_difference_invalid_timestamp():
+    with pytest.raises(ValueError):
+        calculate_minute_difference(start="abc", end="abc")
