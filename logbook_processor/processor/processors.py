@@ -43,19 +43,19 @@ class StreamProcessor(metaclass=ABCMeta):
 
 class LogbookStreamProcessor(StreamProcessor):
     def __init__(self):
-        self.last_waypoint = None
+        self.last_valid_waypoint = None
 
     def process_waypoint(self, waypoint: Waypoint) -> Union[Trip, None]:
-        if not self.last_waypoint:
-            self.last_waypoint = waypoint
+        if not self.last_valid_waypoint:
+            self.last_valid_waypoint = waypoint
             return None
 
-        distance = calculate_distance(self.last_waypoint, waypoint)
+        distance = calculate_distance(self.last_valid_waypoint, waypoint)
         if distance < 15:
             return None
-        time_difference = calculate_minute_difference(self.last_waypoint.timestamp, waypoint.timestamp)
+        time_difference = calculate_minute_difference(self.last_valid_waypoint.timestamp, waypoint.timestamp)
         if time_difference <= 3:
             return None
 
-        trip = Trip(start=self.last_waypoint, end=waypoint, distance=distance)
+        trip = Trip(start=self.last_valid_waypoint, end=waypoint, distance=distance)
         return trip

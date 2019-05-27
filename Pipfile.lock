@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c102c4ff34fd2a7fb0a9f78a123ad6ba3bda845b600083c3a57bb24fd2ae8ef4"
+            "sha256": "24d887142b52a56b9b2fbaae166fbfc181c8f4b795fc043abca33249f12d211b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -43,6 +43,7 @@
                 "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
                 "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
             ],
+            "index": "pypi",
             "version": "==7.0"
         },
         "geographiclib": {
@@ -58,6 +59,13 @@
             ],
             "index": "pypi",
             "version": "==1.20.0"
+        },
+        "progress": {
+            "hashes": [
+                "sha256:69ecedd1d1bbe71bf6313d88d1e6c4d2957b7f1d4f71312c211257f7dae64372"
+            ],
+            "index": "pypi",
+            "version": "==1.5"
         },
         "simplejson": {
             "hashes": [
