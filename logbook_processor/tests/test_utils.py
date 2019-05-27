@@ -1,9 +1,12 @@
+import os
+
 import pytest
-from logbook_processor.processor.processor import Waypoint
+from logbook_processor.processor.processor import Trip, Waypoint
 from logbook_processor.processor.utils import (
     calculate_distance,
     calculate_minute_difference,
     get_waypoints_from_json,
+    save_trips,
 )
 
 
@@ -50,3 +53,13 @@ def test_get_waypoints_from_json():
 def test_get_waypoints_from_json_invalid_path():
     with pytest.raises(FileNotFoundError):
         get_waypoints_from_json(file_path="abc/abc.py")
+
+
+def test_save_trips():
+    start = get_waypoint_distance(1, 1)
+    end = get_waypoint_distance(2, 2)
+    trip = Trip(start=start, end=end, distance=156876)
+    file_path = "logbook_processor/data/test.json"
+    save_trips(file_path=file_path, trip_list=[trip])
+    assert os.path.exists(file_path)
+    os.remove(file_path)

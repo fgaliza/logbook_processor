@@ -26,3 +26,9 @@ def get_waypoints_from_json(file_path):
         data = json.load(json_file)
     waypoints = [Waypoint(**waypoint) for waypoint in data]
     return waypoints
+
+
+def save_trips(file_path, trip_list):
+    json_trip = json.dumps(trip_list, indent=2, namedtuple_as_object=True)
+    with open(file_path, "w") as writer:
+        writer.write(json_trip)
