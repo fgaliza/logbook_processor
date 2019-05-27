@@ -36,5 +36,5 @@ def save_trips(file_path, trip_list):
 
 def generate_file_name():
     now = str(datetime.utcnow())
-    trip_file_path = f"data/my_trips_{now}.json"
+    trip_file_path = f"logbook_processor/data/my_trips_{now}.json"
     return trip_file_path
