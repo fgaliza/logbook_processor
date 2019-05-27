@@ -1,6 +1,8 @@
 from datetime import datetime
 
+import simplejson as json
 from geopy import distance
+from logbook_processor.processor.processor import Waypoint
 
 
 def calculate_distance(last_trip, current_waypoint):
@@ -17,3 +19,10 @@ def calculate_minute_difference(start, end):
     delta = new_timestamp - last_timestamp
     minutes = int(delta.total_seconds() / 60)
     return minutes
+
+
+def get_waypoints_from_json(file_path):
+    with open(file_path) as json_file:
+        data = json.load(json_file)
+    waypoints = [Waypoint(**waypoint) for waypoint in data]
+    return waypoints
