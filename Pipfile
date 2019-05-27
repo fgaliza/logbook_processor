@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 black = "==19.3b0"
+geopy = "*"
 
 [dev-packages]
 coverage = "*"
